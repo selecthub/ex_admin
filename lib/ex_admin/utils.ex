@@ -3,7 +3,6 @@ defmodule ExAdmin.Utils do
   A collection of utility functions.
   """
   require Logger
-  import Ecto.DateTime.Utils, only: [zero_pad: 2]
   import ExAdmin.Gettext
   @module Application.get_env(:ex_admin, :module)
 
@@ -385,4 +384,15 @@ defmodule ExAdmin.Utils do
   def use_authentication do
     false
   end
+
+  # uses modified version of now defunct Ecto.DateTime.Utils.zero_pad/2
+  # from https://github.com/elixir-ecto/ecto/pull/1200/files that supports 
+  # large datetimes
+  defp zero_pad(val, count) do
+    num = Integer.to_string(val)
+    :binary.copy("0", count - byte_size(num)) <> num
+    pad_length = max(count - byte_size(num), 0)
+    :binary.copy("0", pad_length) <> num
+  end
+
 end
