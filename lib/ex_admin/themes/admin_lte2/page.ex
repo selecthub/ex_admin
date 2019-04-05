@@ -6,7 +6,9 @@ defmodule ExAdmin.Theme.AdminLte2.Page do
     count = Kernel.div(12, Enum.count(cols))
 
     for html <- cols do
-      div(html, class: "col-lg-#{count}")
+      html
+      |> Phoenix.HTML.safe_to_string
+      |> div(class: "col-lg-#{count}")
     end
   end
 end
